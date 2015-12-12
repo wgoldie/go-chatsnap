@@ -1,0 +1,159 @@
+html {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    height: 100%;
+    width: 100%;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 14px;
+}
+
+#logo {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    font-size: 60px;
+    font-family: 'Grand Hotel', serif;
+    text-align: center;
+    color: #303030;
+    z-index: 1;
+}
+
+#chat {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding-top: 80px;
+    height: 100%;
+    background: #F9F9F9;
+    position: relative;
+    box-sizing: border-box;
+}
+
+#messages {
+    box-sizing: border-box;
+    padding: 50px 0 5px 0;
+    overflow-y: auto;
+    height: calc(100% - 133px);
+    text-align: center;
+}
+
+#messages .message {
+    border: 1px solid;
+    display: inline-block;
+    clear: both;
+    padding: 10px;
+    margin: 5px 0;
+    text-align: left;
+}
+
+#messages .message .handle {
+    color: #808080;
+    font-size: 10px;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+#messages .message img {
+    margin: 5px;
+    border: 1px solid;
+    background: #fff;
+    height: 100px;
+}
+
+
+#messages .message.left {
+    border-color: #30b9d5;
+    background: #e3f6f9;
+    border-left: none;
+    float: left;
+    border-radius: 0 3px 3px 0;
+}
+
+#messages .message.left img {
+    border-color: #30b9d5;
+}
+
+#messages .message.right {
+    border-color: #ecd2a4;
+    background: #f9f1e3;
+    float: right;
+    border-right: none;
+    border-radius: 3px 0 0 3px;
+}
+
+#messages .message.right img {
+    border-color: #ecd2a4;
+}
+
+#welcome {
+    top: 0;
+    left: 0;
+    right: 0;
+    text-align: center;
+    padding: 10px;
+    background: #FBFBFB;
+    box-shadow: 0 1px 3px -3px;
+    color: #404040;
+}
+
+#chat > footer {
+    box-sizing: border-box;
+    position: absolute;
+    bottom: 0;
+    padding: 10px;
+    width: 100%;
+    background: #FBFBFB;
+    box-shadow: 0 -1px 3px -3px;
+}
+
+#chat > footer input {
+    width: 88%;
+    margin: 0 1%;
+    box-sizing: border-box;
+    background: #FFFFFF;
+    padding: 8px;
+    border: 1px solid #DDDDDD;
+    border-radius: 3px;
+    vertical-align: middle;
+    box-shadow: 0 1px 3px -3px;
+    transition: .25s;
+    font: inherit;
+}
+
+#chat > footer input:focus {
+    border-color: #30b9d5;
+    outline: none;
+}
+
+#chat > footer button {
+    box-sizing: border-box;
+    width: 8%;
+    margin: 0 1%;
+    padding: 8px;
+    border: 1px solid #DDDDDD;
+    border-radius: 3px;
+    vertical-align: middle;
+    height: 37px;
+    background: none;
+    border: none;
+}
+
+#chat > footer button:focus {
+    outline: none;
+}
+
+button::-moz-focus-inner {
+  border: 0;
+}
+
+#chat > footer button svg polyline {
+    transition: .25s;
+    stroke-width: 1px;
+}
+
+#chat > footer button:hover svg polyline {
+    stroke-width: 5px;
+}

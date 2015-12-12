@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+        <title>Chatsnap</title>
+        <link rel="stylesheet" href="index.css" type="text/css" media="all" />
+        <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700,800,300|Grand+Hotel' rel='stylesheet' type='text/css'>
+    </head>
+    <body>
+        <header id="logo">
+            Chatsnap
+        </header>
+        <div id="chat">
+            <header id="welcome">
+                Welcome! Type a message in the box below to chat with photos.
+            </header>
+            <div id="messages">
+            </div>
+            <footer>
+                <input type="text" name="handle" id="handle" placeholder="Handle" />
+                <input type="text" name="response" id="response" placeholder="Send a message" /><button id="send-button">
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="21px" height="21px" viewBox="0 0 50 80" xml:space="preserve">
+                        <polyline fill="none" stroke="#30b9d5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" points="0.375,0.375 45.63,38.087 0.375,75.8 "></polyline>
+                    </svg>
+                </button>
+            </footer>
+        </div>
+        
+        <script src="http://cdn.pubnub.com/pubnub.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="index.js" type="text/javascript" charset="utf-8"></script>
+    </body>
+</html> 
