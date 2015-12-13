@@ -57,6 +57,7 @@ func main() {
 	flag.Parse()
 
 	if *yahooClientId == "" || *yahooClientSecret == "" || *pubnubPublishKey == "" || *pubnubSubscribeKey == "" || *pubnubSecretKey == "" {
+		fmt.Println("Something is wrong with the config flags")
 		os.Exit(1)
 	}
 
