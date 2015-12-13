@@ -1,0 +1,14 @@
+{
+	"ImportPath": "github.com/wgoldie/go-chatsnap",
+	"GoVersion": "go1.5.1",
+	"Deps": [
+		{
+			"ImportPath": "github.com/mrjones/oauth",
+			"Rev": "08f4af202e479e3caee4c7d4119066d76fd2e83e"
+		},
+		{
+			"ImportPath": "github.com/pubnub/go/messaging",
+			"Rev": "dbc92c53a1406a190992df85851ebe149c1da43c"
+		}
+	]
+}
