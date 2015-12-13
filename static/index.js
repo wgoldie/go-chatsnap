@@ -10,30 +10,26 @@
     
     var Message = function (data) {
         var scrollDown = messagePane.scrollTop === (messagePane.scrollHeight - messagePane.offsetHeight);
-        
-        console.log(scrollDown);
-        
-        var message = data[0][0];
-        
         var messageBox = document.createElement('div');
+        var message = JSON.parse(data);
         
-        messageBox.classList.add('message', message.sender.replace(/\s/gi, '-'));
-        if (message.sender === handleInput.value) {
+        messageBox.classList.add('message', message["sender"].replace(/\s/gi, '-'));
+        if (message["sender"] === handleInput.value) {
             messageBox.classList.add('right');
         } else {
             messageBox.classList.add('left');
         }
-        if (Chat.handles.indexOf(message.sender) === -1) newHandle(message.sender);
+        
+        if (Chat.handles.indexOf(message["sender"]) === -1) newHandle(message["sender"]);
         messagePane.appendChild(messageBox);        
         var handle = document.createElement('div');
         handle.className = "handle";
-        handle.innerHTML = message.sender;
+        handle.innerHTML = message["sender"];
         messageBox.appendChild(handle);
         
-        for(var i in message.images) {
-            console.log(message.images[i]);
+        for(var i in message["images"]) {
             var img = document.createElement('img');
-            img.src = message.images[i];
+            img.src = message["images"][i];
             messageBox.appendChild(img);
         }
         
@@ -43,7 +39,6 @@
     function newHandle (handle) {
         Chat.handles.push(handle);
         var colors = picker.generate();
-        console.log(colors);
         // colorsheet.addRule('.'+handle, 'background:'+colors[0]+';border-color:'+colors[1]);
     }
     
@@ -96,8 +91,8 @@
     };
     
     pubnub = PUBNUB.init({
-        publish_key: 'pub-c-b90ba66d-9f35-4dd0-90ea-d72c021cc0a5',
-        subscribe_key: 'sub-c-093f87ca-7da7-11e4-b601-02ee2ddab7fe',
+        publish_key: 'pub-c-3aa060e1-a1e3-49a2-ac3b-07d040fcf8f3',
+        subscribe_key: 'sub-c-0292b910-a12d-11e5-bdb6-0619f8945a4f',
         origin : 'pubsub.pubnub.com',
         ssl : false
     });
@@ -106,7 +101,7 @@
     pubnub.subscribe({
         channel: 'chat',
         message: function (message, env, channel) {
-            new Message(env);
+            new Message(message);
         },
         connect: function () {
             console.info('Connection established.');
