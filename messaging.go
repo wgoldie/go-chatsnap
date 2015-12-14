@@ -7,6 +7,7 @@ import (
 	"io"
 	"net/http"
 	"regexp"
+	"fmt"
 )
 
 // Expected format of json for message post requests recieved from clients over the api
@@ -55,7 +56,7 @@ func send(im *ImageManager, pn *messaging.Pubnub) func(w http.ResponseWriter, r 
 			panic(err)
 		}
 
-//		fmt.Println(m.Channel)
+		fmt.Println(m.Channel)
 
 		var errorChannel = make(chan []byte)
 		var callbackChannel = make(chan []byte)
