@@ -72,5 +72,5 @@ func main() {
 
 	http.Handle("/", http.FileServer(http.Dir("./static")))
 	http.HandleFunc("/api/send", send(&im, pn))
-	http.ListenAndServe(":5000", nil)
+	http.ListenAndServe(os.Getenv("PORT"), nil)
 }
