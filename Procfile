@@ -1,1 +1,1 @@
-web go-chatsnap -yahooClientId=$YAHOO_CLIENT_ID -yahooClientSecret=$YAHOO_CLIENT_SECRET -pubnubPublishKey=$PUBNUB_PUBLISH_KEY -pubnubSubscribeKey=$PUBNUB_SUBSCRIBE_KEY -pubnubSecretKey=$PUBNUB_SECRET_KEY
+web: go-chatsnap

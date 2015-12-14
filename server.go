@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/json"
-	"flag"
 	"fmt"
 	"github.com/wgoldie/go-chatsnap/Godeps/_workspace/src/github.com/pubnub/go/messaging"
 	"io"
@@ -48,22 +47,28 @@ func send(im *ImageManager, pn *messaging.Pubnub) func(w http.ResponseWriter, r 
 }
 
 func main() {
-	yahooClientId := flag.String("yahooClientId", "", "The yahoo client ID key")
-	yahooClientSecret := flag.String("yahooClientSecret", "", "The yahoo client secret key")
-	pubnubPublishKey := flag.String("pubnubPublishKey", "", "The pubnub client publish key")
-	pubnubSubscribeKey := flag.String("pubnubSubscribeKey", "", "The pubnub client subscribe key")
-	pubnubSecretKey := flag.String("pubnubSecretKey", "", "The pubnub client secret key")
+	yahooClientId := os.Getenv("YAHOO_CLIENT_ID")
+	yahooClientSecret := os.Getenv("YAHOO_CLIENT_SECRET")
+	pubnubPublishKey := os.Getenv("PUBNUB_PUBLISH_KEY")
+	pubnubSubscribeKey :=  os.Getenv("PUBNUB_SUBSCRIBE_KEY")
+	pubnubSecretKey :=  os.Getenv("PUBNUB_SECRET_KEY")
 
-	flag.Parse()
-
-	if *yahooClientId == "" || *yahooClientSecret == "" || *pubnubPublishKey == "" || *pubnubSubscribeKey == "" || *pubnubSecretKey == "" {
+	if yahooClientId == "" || yahooClientSecret == "" || pubnubPublishKey == "" || pubnubSubscribeKey == "" || pubnubSecretKey == "" {
 		fmt.Println("Something is wrong with the config flags")
+		
+		fmt.Println(yahooClientId)
+		fmt.Println(yahooClientSecret)
+		fmt.Println(pubnubPublishKey)
+		fmt.Println(pubnubSubscribeKey)
+		fmt.Println(pubnubSecretKey)
+
 		os.Exit(1)
 	}
+	
 
-	pn := messaging.NewPubnub(*pubnubPublishKey, *pubnubSubscribeKey, *pubnubSecretKey, "", false, "92895fc3-cc14-4e3d-a38a-901dd3739238")
+	pn := messaging.NewPubnub(pubnubPublishKey, pubnubSubscribeKey, pubnubSecretKey, "", false, "92895fc3-cc14-4e3d-a38a-901dd3739238")
 
-	im := NewImageManager(*yahooClientId, *yahooClientSecret)
+	im := NewImageManager(yahooClientId, yahooClientSecret)
 
 	fmt.Println("API root:" + im.Url)
 	http.Handle("/", http.FileServer(http.Dir("./static")))
