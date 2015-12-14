@@ -3,11 +3,13 @@ package main
 import (
 	"encoding/json"
 	"github.com/wgoldie/go-chatsnap/Godeps/_workspace/src/github.com/mrjones/oauth"
+	"github.com/go-redis/redis"
 )
 
 type ImageManager struct {
 	Url      string
 	Consumer *oauth.Consumer
+	Client *redis.Client
 }
 
 func (im *ImageManager) getImageUrl(query string) string {
@@ -39,11 +41,18 @@ func (im *ImageManager) getImageUrl(query string) string {
 		panic(err)
 	}
 
-	return m.BossResponse.Images.Results[0].Url
+	url := m.BossResponse.Images.Results[0].Url
+	err = im.Client.Set(query, url)
+	return url
 }
 
-func NewImageManager(ClientId string, ClientSecret string) ImageManager {
+func NewImageManager(ClientId string, ClientSecret string, RedisUrl string) ImageManager {
 	return ImageManager{
 		Url:      "https://yboss.yahooapis.com/ysearch/web",
-		Consumer: oauth.NewConsumer(ClientId, ClientSecret, oauth.ServiceProvider{})}
+		Consumer: oauth.NewConsumer(ClientId, ClientSecret, oauth.ServiceProvider{})
+		Client: redis.NewClient(&redis.Options{
+			Addr: redisUrl,
+			Password: "",
+			DB: 0,
+		})}
 }

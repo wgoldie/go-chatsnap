@@ -52,7 +52,9 @@ func main() {
 	pubnubPublishKey := os.Getenv("PUBNUB_PUBLISH_KEY")
 	pubnubSubscribeKey :=  os.Getenv("PUBNUB_SUBSCRIBE_KEY")
 	pubnubSecretKey :=  os.Getenv("PUBNUB_SECRET_KEY")
+	redisUrl := os.Getenv("REDIS_URL")
 	port := os.Getenv("PORT")
+
 	if yahooClientId == "" || yahooClientSecret == "" || pubnubPublishKey == "" || pubnubSubscribeKey == "" || pubnubSecretKey == "" || port == "" {
 		fmt.Println("Something is wrong with the config flags")
 		os.Exit(666)
@@ -61,7 +63,7 @@ func main() {
 
 	pn := messaging.NewPubnub(pubnubPublishKey, pubnubSubscribeKey, pubnubSecretKey, "", false, "92895fc3-cc14-4e3d-a38a-901dd3739238")
 
-	im := NewImageManager(yahooClientId, yahooClientSecret)
+	im := NewImageManager(yahooClientId, yahooClientSecret, redisUrl)
 
 	http.Handle("/", http.FileServer(http.Dir("./static")))
 	http.HandleFunc("/api/send", send(&im, pn))
