@@ -73,5 +73,5 @@ func main() {
 	fmt.Println("API root:" + im.Url)
 	http.Handle("/", http.FileServer(http.Dir("./static")))
 	http.HandleFunc("/api/send", send(&im, pn))
-	http.ListenAndServe(":3333", nil)
+	http.ListenAndServe(":80", nil)
 }
