@@ -1,13 +1,13 @@
 package main
 
 import (
-	"net/http"
-	"github.com/pubnub/go/messaging"
 	"encoding/json"
-	"io"
-	"github.com/kennygrant/sanitize"
-	"regexp"
 	"fmt"
+	"github.com/wgoldie/go-chatsnap/Godeps/_workspace/src/github.com/kennygrant/sanitize"
+	"github.com/wgoldie/go-chatsnap/Godeps/_workspace/src/github.com/pubnub/go/messaging"
+	"io"
+	"net/http"
+	"regexp"
 )
 
 type Message struct {
@@ -29,7 +29,7 @@ func send(im *ImageManager, pn *messaging.Pubnub) func(w http.ResponseWriter, r 
 		if err != nil && err != io.EOF {
 			panic(err)
 		}
-		
+
 		var validChars = regexp.MustCompile(`[^a-zA-Z0-9 ]`)
 
 		sanitizedQuery := sanitize.Accents(m.Message)
@@ -40,7 +40,7 @@ func send(im *ImageManager, pn *messaging.Pubnub) func(w http.ResponseWriter, r 
 		}
 
 		msg := im.getImageUrls(cleanQuery)
-		
+
 		if err != nil {
 			panic(err)
 		}
