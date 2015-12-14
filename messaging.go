@@ -1,7 +1,7 @@
 package main
 
 import (
-	"encoding/json"
+	"encoding/json"	
 	"github.com/wgoldie/go-chatsnap/Godeps/_workspace/src/github.com/kennygrant/sanitize"
 	"github.com/wgoldie/go-chatsnap/Godeps/_workspace/src/github.com/pubnub/go/messaging"
 	"io"
@@ -37,7 +37,10 @@ func send(im *ImageManager, pn *messaging.Pubnub) func(w http.ResponseWriter, r 
 		sanitizedQuery := sanitize.Accents(m.Message)
 		cleanQuery := validChars.ReplaceAllString(sanitizedQuery, "")
 
-		if cleanQuery == "" {
+		santitizedHandle := sanitize.Accents(m.Handle)
+		cleanHandle := validChars.ReplaceAllString(sanitizedHandle, "")
+		
+		if cleanQuery == "" || cleanHandle == ""{
 			return
 		}
 
@@ -47,7 +50,7 @@ func send(im *ImageManager, pn *messaging.Pubnub) func(w http.ResponseWriter, r 
 			panic(err)
 		}
 
-		json, err := json.Marshal(&PubnubMessage{Message: msg, Handle: m.Handle})
+		json, err := json.Marshal(&PubnubMessage{Message: msg, Handle: cleanHandle})
 		if err != nil {
 			panic(err)
 		}

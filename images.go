@@ -20,7 +20,7 @@ type ImageManager struct {
 func (im *ImageManager) queryNewImageUrl(query string) (string, error) {
 	queryString := map[string]string{
 		"q":          "\"" + query + "\"",
-		"filter":     "no",
+		"filter":     "yes",
 		"dimensions": "small",
 		"count":      "1"}
 
