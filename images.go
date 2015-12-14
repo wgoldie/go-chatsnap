@@ -2,8 +2,9 @@ package main
 
 import (
 	"encoding/json"
-	"github.com/wgoldie/go-chatsnap/Godeps/_workspace/src/github.com/mrjones/oauth"
-	"github.com/go-redis/redis"
+	"github.com/mrjones/oauth"
+	"gopkg.in/redis.v3"
+	"fmt"
 )
 
 type ImageManager struct {
@@ -42,17 +43,27 @@ func (im *ImageManager) getImageUrl(query string) string {
 	}
 
 	url := m.BossResponse.Images.Results[0].Url
-	err = im.Client.Set(query, url)
+	err = im.Client.Set(query, url, 0).Err()
+	
+	if err != nil {
+		fmt.Println(err)
+	}
+	
 	return url
 }
 
 func NewImageManager(ClientId string, ClientSecret string, RedisUrl string) ImageManager {
+
+	parsedURL, _ := url.Parse(herokuURL)
+	password, _ := parsedURL.User.Password()
+	host := parsedURL.Host
+
 	return ImageManager{
 		Url:      "https://yboss.yahooapis.com/ysearch/web",
-		Consumer: oauth.NewConsumer(ClientId, ClientSecret, oauth.ServiceProvider{})
+		Consumer: oauth.NewConsumer(ClientId, ClientSecret, oauth.ServiceProvider{}),
 		Client: redis.NewClient(&redis.Options{
-			Addr: redisUrl,
-			Password: "",
+			Addr: host,
+			Password: password,
 			DB: 0,
 		})}
 }

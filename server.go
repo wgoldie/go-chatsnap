@@ -3,7 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/wgoldie/go-chatsnap/Godeps/_workspace/src/github.com/pubnub/go/messaging"
+	"github.com/pubnub/go/messaging"
 	"io"
 	"net/http"
 	"os"
