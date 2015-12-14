@@ -37,7 +37,7 @@ func send(im *ImageManager, pn *messaging.Pubnub) func(w http.ResponseWriter, r 
 		sanitizedQuery := sanitize.Accents(m.Message)
 		cleanQuery := validChars.ReplaceAllString(sanitizedQuery, "")
 
-		santitizedHandle := sanitize.Accents(m.Handle)
+		sanitizedHandle := sanitize.Accents(m.Handle)
 		cleanHandle := validChars.ReplaceAllString(sanitizedHandle, "")
 		
 		if cleanQuery == "" || cleanHandle == ""{
