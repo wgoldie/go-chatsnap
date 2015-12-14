@@ -1,0 +1,63 @@
+package main
+
+import (
+	"net/http"
+	"github.com/pubnub/go/messaging"
+	"encoding/json"
+	"io"
+	"github.com/kennygrant/sanitize"
+	"regexp"
+	"fmt"
+)
+
+type Message struct {
+	Message string `json:"message"`
+	Handle  string `json:"handle"`
+	Channel string `json:"channel"`
+}
+
+type PubnubMessage struct {
+	Message []string `json:"images"`
+	Handle  string   `json:"sender"`
+}
+
+func send(im *ImageManager, pn *messaging.Pubnub) func(w http.ResponseWriter, r *http.Request) {
+	return func(w http.ResponseWriter, r *http.Request) {
+		decoder := json.NewDecoder(r.Body)
+		var m Message
+		err := decoder.Decode(&m)
+		if err != nil && err != io.EOF {
+			panic(err)
+		}
+		
+		var validChars = regexp.MustCompile(`[^a-zA-Z0-9 ]`)
+
+		sanitizedQuery := sanitize.Accents(m.Message)
+		cleanQuery := validChars.ReplaceAllString(sanitizedQuery, "")
+
+		if cleanQuery == "" {
+			return
+		}
+
+		msg := im.getImageUrls(cleanQuery)
+		
+		if err != nil {
+			panic(err)
+		}
+
+		json, err := json.Marshal(&PubnubMessage{Message: msg, Handle: m.Handle})
+		if err != nil {
+			panic(err)
+		}
+
+		fmt.Println(m.Channel)
+
+		var errorChannel = make(chan []byte)
+		var callbackChannel = make(chan []byte)
+		go pn.Publish(
+			m.Channel,
+			string(json),
+			callbackChannel,
+			errorChannel)
+	}
+}

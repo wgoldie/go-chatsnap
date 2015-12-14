@@ -122,6 +122,26 @@
         var handle = handleInput.value;
         if (handle === '') return;
         el.value = '';
+        
+        if(val[0] === '#') {
+            pubnub.unsubscribe({
+                channel : Chat.channel,
+            });
+          
+            Chat.channel = val.substring(1).toLowerCase();
+            pubnub.subscribe({
+                channel: Chat.channel,
+                message: function (message, env, channel) {
+                    new Message(message);
+                },
+                connect: function () {
+                    console.info('Connection established.');
+                }
+            });
+            document.getElementById('channel').innerHTML = "Channel: " + Chat.channel
+            return;
+        }
+        
         var req = new XMLHttpRequest();
         req.open('POST', '/api/send', true);
         req.setRequestHeader('Content-Type', 'application/json');

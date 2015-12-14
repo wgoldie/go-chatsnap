@@ -6,7 +6,7 @@ body {
     margin: 0;
     height: 100%;
     width: 100%;
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'Source Code Pro', monospace;
     font-size: 14px;
 }
 
@@ -16,15 +16,14 @@ body {
     left: 0;
     right: 0;
     font-size: 60px;
-    font-family: 'Grand Hotel', serif;
+    font-family: 'Source Code Pro', monospace;
     text-align: center;
     color: #303030;
     z-index: 1;
 }
 
 #chat {
-    max-width: 1000px;
-    margin: 0 auto;
+    width: 100%;;
     padding-top: 80px;
     height: 100%;
     background: #F9F9F9;
@@ -33,6 +32,8 @@ body {
 }
 
 #messages {
+    max-width: 100%;
+    margin: 0 auto;
     box-sizing: border-box;
     padding: 50px 0 5px 0;
     overflow-y: auto;
@@ -69,7 +70,7 @@ body {
     background: #e3f6f9;
     border-left: none;
     float: left;
-    border-radius: 0 3px 3px 0;
+    border-radius: 3px 3px 3px 3px;
 }
 
 #messages .message.left img {
@@ -81,7 +82,7 @@ body {
     background: #f9f1e3;
     float: right;
     border-right: none;
-    border-radius: 3px 0 0 3px;
+    border-radius: 3px 3px 3px 3px;
 }
 
 #messages .message.right img {

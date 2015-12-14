@@ -6,6 +6,7 @@ import (
 	"gopkg.in/redis.v3"
 	"net/url"
 	"fmt"
+	"strings"
 )
 
 type ImageManager struct {
@@ -80,6 +81,23 @@ func (im *ImageManager) getImageUrl(query string) (string, error) {
 	}
 	
 	return val, err
+}
+
+func (im *ImageManager) getImageUrls(query string) ([]string){
+	fields := strings.Fields(query)
+	results := []string{}
+	for _, el := range fields {
+		val, err := im.getImageUrl(el)
+		
+		if err != nil {
+			fmt.Println(err)
+			continue
+		} else if val != "" {
+			results = append(results, val)
+		}
+	}
+	
+	return results
 }
 
 func NewImageManager(ClientId string, ClientSecret string, RedisUrl string) ImageManager {
