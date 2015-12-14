@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"github.com/mrjones/oauth"
 	"gopkg.in/redis.v3"
+	"net/url"
 	"fmt"
 )
 
@@ -13,7 +14,7 @@ type ImageManager struct {
 	Client *redis.Client
 }
 
-func (im *ImageManager) getImageUrl(query string) string {
+func (im *ImageManager) queryNewImageUrl(query string) (string, error) {
 	queryString := map[string]string{
 		"q":          "\"" + query + "\"",
 		"filter":     "no",
@@ -21,9 +22,9 @@ func (im *ImageManager) getImageUrl(query string) string {
 		"count":      "1"}
 
 	accessToken := &oauth.AccessToken{}
-	r, err := im.Consumer.Get("https://yboss.yahooapis.com/ysearch/images", queryString, accessToken)
+	r, err := im.Consumer.Get(im.Url, queryString, accessToken)
 	if err != nil {
-		panic(err)
+		return "", err
 	}
 
 	decoder := json.NewDecoder(r.Body)
@@ -38,28 +39,57 @@ func (im *ImageManager) getImageUrl(query string) string {
 	}
 
 	err = decoder.Decode(&m)
-	if err != nil {
-		panic(err)
-	}
+	
+	fmt.Println("Queried for new result")
+	return m.BossResponse.Images.Results[0].Url, err
+}
 
-	url := m.BossResponse.Images.Results[0].Url
-	err = im.Client.Set(query, url, 0).Err()
+func (im *ImageManager) queryCachedImageUrl(query string) (bool, string, error) {
+	val, err := im.Client.Get(query).Result()
+	
+	if err == redis.Nil {
+		return false, "", nil
+	} else if err != nil {
+		return false, val, nil
+	} 
+	
+	fmt.Println("Cache returned result")
+	
+	return true, val, nil
+}
+
+func (im *ImageManager) getImageUrl(query string) (string, error) {
+	found, val, err := im.queryCachedImageUrl(query)
 	
 	if err != nil {
-		fmt.Println(err)
+		return "", err
 	}
 	
-	return url
+	if !found {
+		val, err = im.queryNewImageUrl(query)
+		if err != nil {
+			return "", err
+		}
+		
+		// todo: check for race condition replacement? 
+		// no real reason to do so...
+		// it's unlikely that an image would be double set fast enough
+		// and would also have a different result from the search api
+		// and it wouldn't matter
+		err = im.Client.Set(query, val, 0).Err()
+	}
+	
+	return val, err
 }
 
 func NewImageManager(ClientId string, ClientSecret string, RedisUrl string) ImageManager {
 
-	parsedURL, _ := url.Parse(herokuURL)
+	parsedURL, _ := url.Parse(RedisUrl)
 	password, _ := parsedURL.User.Password()
 	host := parsedURL.Host
 
 	return ImageManager{
-		Url:      "https://yboss.yahooapis.com/ysearch/web",
+		Url:      "https://yboss.yahooapis.com/ysearch/images",
 		Consumer: oauth.NewConsumer(ClientId, ClientSecret, oauth.ServiceProvider{}),
 		Client: redis.NewClient(&redis.Options{
 			Addr: host,

@@ -29,7 +29,11 @@ func send(im *ImageManager, pn *messaging.Pubnub) func(w http.ResponseWriter, r 
 			panic(err)
 		}
 
-		msg := im.getImageUrl(m.Message)
+		msg, err := im.getImageUrl(m.Message)
+		
+		if err != nil {
+			panic(err)
+		}
 
 		json, err := json.Marshal(&PubnubMessage{Message: []string{msg}, Handle: m.Handle})
 		if err != nil {
