@@ -52,17 +52,10 @@ func main() {
 	pubnubPublishKey := os.Getenv("PUBNUB_PUBLISH_KEY")
 	pubnubSubscribeKey :=  os.Getenv("PUBNUB_SUBSCRIBE_KEY")
 	pubnubSecretKey :=  os.Getenv("PUBNUB_SECRET_KEY")
-
-	if yahooClientId == "" || yahooClientSecret == "" || pubnubPublishKey == "" || pubnubSubscribeKey == "" || pubnubSecretKey == "" {
+	port := os.Getenv("PORT")
+	if yahooClientId == "" || yahooClientSecret == "" || pubnubPublishKey == "" || pubnubSubscribeKey == "" || pubnubSecretKey == "" || port == "" {
 		fmt.Println("Something is wrong with the config flags")
-		
-		fmt.Println(yahooClientId)
-		fmt.Println(yahooClientSecret)
-		fmt.Println(pubnubPublishKey)
-		fmt.Println(pubnubSubscribeKey)
-		fmt.Println(pubnubSecretKey)
-
-		os.Exit(1)
+		os.Exit(666)
 	}
 	
 
@@ -72,5 +65,5 @@ func main() {
 
 	http.Handle("/", http.FileServer(http.Dir("./static")))
 	http.HandleFunc("/api/send", send(&im, pn))
-	http.ListenAndServe(os.Getenv("PORT"), nil)
+	http.ListenAndServe(":"+port, nil)
 }
