@@ -10,17 +10,20 @@ import (
 	"regexp"
 )
 
+// Expected format of json for message post requests recieved from clients over the api
 type Message struct {
 	Message string `json:"message"`
 	Handle  string `json:"handle"`
 	Channel string `json:"channel"`
 }
 
+// Format for json messages broadcast to clients over the pubsub service
 type PubnubMessage struct {
 	Message []string `json:"images"`
 	Handle  string   `json:"sender"`
 }
 
+// Function provider to handle http requests to the api for sending messages
 func send(im *ImageManager, pn *messaging.Pubnub) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		decoder := json.NewDecoder(r.Body)
@@ -50,7 +53,7 @@ func send(im *ImageManager, pn *messaging.Pubnub) func(w http.ResponseWriter, r 
 			panic(err)
 		}
 
-		fmt.Println(m.Channel)
+//		fmt.Println(m.Channel)
 
 		var errorChannel = make(chan []byte)
 		var callbackChannel = make(chan []byte)

@@ -9,12 +9,14 @@ import (
 	"strings"
 )
 
+// Holds information on the current image API
 type ImageManager struct {
 	Url      string
 	Consumer *oauth.Consumer
 	Client   *redis.Client
 }
 
+// Queries the image search api for a new image url for the given query string
 func (im *ImageManager) queryNewImageUrl(query string) (string, error) {
 	queryString := map[string]string{
 		"q":          "\"" + query + "\"",
@@ -41,10 +43,11 @@ func (im *ImageManager) queryNewImageUrl(query string) (string, error) {
 
 	err = decoder.Decode(&m)
 
-	fmt.Println("Queried for new result")
+//	fmt.Println("Queried for new result")
 	return m.BossResponse.Images.Results[0].Url, err
 }
 
+// Queries the cached image url database for the given query string
 func (im *ImageManager) queryCachedImageUrl(query string) (bool, string, error) {
 	val, err := im.Client.Get(query).Result()
 
@@ -54,11 +57,13 @@ func (im *ImageManager) queryCachedImageUrl(query string) (bool, string, error) 
 		return false, val, nil
 	}
 
-	fmt.Println("Cache returned result")
+//	fmt.Println("Cache returned result")
 
 	return true, val, nil
 }
 
+// Retrieves the url for the given query string if it is present in the cached image url databse
+// Otherwise, queries for a new url and caches it in the database
 func (im *ImageManager) getImageUrl(query string) (string, error) {
 	found, val, err := im.queryCachedImageUrl(query)
 
@@ -83,6 +88,8 @@ func (im *ImageManager) getImageUrl(query string) (string, error) {
 	return val, err
 }
 
+// Gets a series of imageurls for the given query string's ngram elements
+// Currently seperates on spaces
 func (im *ImageManager) getImageUrls(query string) []string {
 	fields := strings.Fields(query)
 	results := []string{}
@@ -100,6 +107,7 @@ func (im *ImageManager) getImageUrls(query string) []string {
 	return results
 }
 
+// Constructs a new ImageManager struct
 func NewImageManager(ClientId string, ClientSecret string, RedisUrl string) ImageManager {
 
 	parsedURL, _ := url.Parse(RedisUrl)
