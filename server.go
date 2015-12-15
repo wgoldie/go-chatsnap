@@ -9,8 +9,8 @@ import (
 )
 
 func main() {
-	yahooClientId := os.Getenv("YAHOO_CLIENT_ID")
-	yahooClientSecret := os.Getenv("YAHOO_CLIENT_SECRET")
+	yahooClientId := os.Getenv("YAHOOBOSS_KEY")
+	yahooClientSecret := os.Getenv("YAHOOBOSS_SECRET")
 	pubnubPublishKey := os.Getenv("PUBNUB_PUBLISH_KEY")
 	pubnubSubscribeKey := os.Getenv("PUBNUB_SUBSCRIBE_KEY")
 	pubnubSecretKey := os.Getenv("PUBNUB_SECRET_KEY")
