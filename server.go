@@ -9,8 +9,8 @@ import (
 )
 
 func main() {
-	yahooClientId := os.Getenv("YAHOOBOSS_KEY")
-	yahooClientSecret := os.Getenv("YAHOOBOSS_SECRET")
+	yahooClientId := os.Getenv("YAHOO_CLIENT_ID")
+	yahooClientSecret := os.Getenv("YAHOO_CLIENT_SECRET")
 	pubnubPublishKey := os.Getenv("PUBNUB_PUBLISH_KEY")
 	pubnubSubscribeKey := os.Getenv("PUBNUB_SUBSCRIBE_KEY")
 	pubnubSecretKey := os.Getenv("PUBNUB_SECRET_KEY")
@@ -21,11 +21,12 @@ func main() {
 		fmt.Println("Invalid config flags")
 		os.Exit(666)
 	}
-
+		fmt.Println("a")
 	pn := messaging.NewPubnub(pubnubPublishKey, pubnubSubscribeKey, pubnubSecretKey, "", false, uuid.NewV1().String())
 	im := NewImageManager(yahooClientId, yahooClientSecret, redisUrl)
-
+		fmt.Println("b")
 	http.Handle("/", http.FileServer(http.Dir("./static")))
 	http.HandleFunc("/api/send", send(&im, pn))
 	http.ListenAndServe(":"+port, nil)
+			fmt.Println("c")
 }
