@@ -9,13 +9,13 @@ go-chatsnap runs pretty well on heroku.
 You need Yahoo BOSS api keys, Pubnub API keys, and a Redis addon set as the following respective environment variables:
 
 
-YAHOO_CLIENT_ID
-YAHOO_CLIENT_SECRET
-PUBNUB_PUBLISH_KEY
-PUBNUB_SUBSCRIBE_KEY
-PUBNUB_SECRET_KEY
-REDIS_URL
-PORT
+- YAHOO_CLIENT_ID
+- YAHOO_CLIENT_SECRET
+- PUBNUB_PUBLISH_KEY
+- PUBNUB_SUBSCRIBE_KEY
+- PUBNUB_SECRET_KEY
+- REDIS_URL
+- PORT
 
 
 Feel free to fork or pull request.
