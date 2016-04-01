@@ -1,1 +1,1 @@
-'web: go-chatsnap' 
+web: ls; go-chatsnap 
