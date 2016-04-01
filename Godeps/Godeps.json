@@ -28,6 +28,11 @@
 			"Rev": "f14ad9c78b155f69b480cfa41cb655259baac260"
 		},
 		{
+			"ImportPath": "gopkg.in/dietsche/textbelt.v1",
+			"Comment": "v1.0.0",
+			"Rev": "16ebf420c297b377c0f1066551c1b5b1d9097832"
+		},
+		{
 			"ImportPath": "gopkg.in/redis.v3",
 			"Comment": "v3.2.22",
 			"Rev": "745d73395e0b3fc51dcde381ae93902822ceca44"

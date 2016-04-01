@@ -19,11 +19,22 @@ type BingManager struct {
 
 // Queries the image search api for a new image url for the given query string
 func (bm *BingManager) queryNewImageUrl(query string) (string, error) {
-	queryString := fmt.Sprintf(
-		"https://api.datamarket.azure.com/Bing/Search/Image?$format=json&Query=%%27{%s}%%27&$top=1",
-		query)
+    var Query *url.URL
+    Query, err := url.Parse("https://api.datamarket.azure.com/Bing/Search/Image")
+    if err != nil {
+		return "", err
+    }
+    parameters := url.Values{}
+    parameters.Add("ImageFilters", "'Aspect:Square'")
+    parameters.Add("$format", "json")
+    parameters.Add("Adult", "'Moderate'")
+    parameters.Add("$top", "1")
+    parameters.Add("Query", fmt.Sprintf("'%s'", query))
+    
+    Query.RawQuery = parameters.Encode()
 
-	req, err := http.NewRequest("GET", queryString, nil)
+
+	req, err := http.NewRequest("GET", Query.String(), nil)
 	if err != nil {
 		return "", err
 	}
@@ -38,11 +49,14 @@ func (bm *BingManager) queryNewImageUrl(query string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-
+        
 	var m struct {
 		D struct {
 			Results []struct {
 				MediaUrl string `json:"MediaUrl"`
+                Thumbnail struct {
+                    Url string `json:"MediaUrl"`
+                } `json:"Thumbnail"`
 			} `json:"results"`
 		} `json:"d"`
 	}
@@ -52,7 +66,7 @@ func (bm *BingManager) queryNewImageUrl(query string) (string, error) {
 		fmt.Println(err)
 		return "", err
 	}
-	return m.D.Results[0].MediaUrl, err
+	return m.D.Results[0].Thumbnail.Url, err
 }
 
 // Queries the cached image url database for the given query string
@@ -118,7 +132,6 @@ func (bm *BingManager) getImageUrls(query string) []string {
 
 // Constructs a new BingManager struct
 func NewBingManager(accountKey string, RedisUrl string) BingManager {
-
 	parsedURL, _ := url.Parse(RedisUrl)
 	password, _ := parsedURL.User.Password()
 	host := parsedURL.Host

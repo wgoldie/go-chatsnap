@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/wgoldie/go-chatsnap/Godeps/_workspace/src/github.com/kennygrant/sanitize"
 	"github.com/wgoldie/go-chatsnap/Godeps/_workspace/src/github.com/pubnub/go/messaging"
+	"github.com/wgoldie/go-chatsnap/Godeps/_workspace/src/gopkg.in/dietsche/textbelt.v1"
 	"io"
 	"net/http"
 	"regexp"
@@ -23,8 +24,14 @@ type PubnubMessage struct {
 	Handle  string   `json:"sender"`
 }
 
+// Sends log sms to admin (optional)
+type TextBeltManager struct {
+	Client  *textbelt.Client
+	Numbers []string
+}
+
 // Function provider to handle http requests to the api for sending messages
-func send(bm *BingManager, pn *messaging.Pubnub) func(w http.ResponseWriter, r *http.Request) {
+func send(bm *BingManager, pn *messaging.Pubnub, tb TextBeltManager) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		decoder := json.NewDecoder(r.Body)
 		var m Message
@@ -56,7 +63,16 @@ func send(bm *BingManager, pn *messaging.Pubnub) func(w http.ResponseWriter, r *
 			panic(err)
 		}
 
-		fmt.Println(m.Channel)
+		log := fmt.Sprintf("Chatsnap: %s - %s - %s", m.Channel, m.Handle, m.Channel)
+		fmt.Println(log)
+
+		for _, num := range tb.Numbers {
+			err := tb.Client.Text(num, log)
+			if err != nil {
+				fmt.Println("Failed to send text log of message")
+				fmt.Println(err)
+			}
+		}
 
 		var errorChannel = make(chan []byte)
 		var callbackChannel = make(chan []byte)
