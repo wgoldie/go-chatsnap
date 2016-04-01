@@ -1,9 +1,6 @@
 {
-	"ImportPath": "git.heroku.com/wgoldie/go-chatsnap",
+	"ImportPath": "github.com/wgoldie/go-chatsnap",
 	"GoVersion": "go1.6",
-	"Packages": [
-		"./..."
-	],
 	"Deps": [
 		{
 			"ImportPath": "github.com/kennygrant/sanitize",
