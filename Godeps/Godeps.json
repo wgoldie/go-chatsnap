@@ -1,6 +1,6 @@
 {
-	"ImportPath": "git.heroku.com/wgoldie/salty-journey-8106",
-	"GoVersion": "go1.5.1",
+	"ImportPath": "git.heroku.com/wgoldie/go-chatsnap",
+	"GoVersion": "go1.6",
 	"Packages": [
 		"./..."
 	],
