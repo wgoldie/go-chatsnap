@@ -3,8 +3,8 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/wgoldie/go-chatsnap/Godeps/_workspace/src/github.com/mrjones/oauth"
-	"github.com/wgoldie/go-chatsnap/Godeps/_workspace/src/gopkg.in/redis.v3"
+	"github.com/mrjones/oauth"
+	"gopkg.in/redis.v3"
 	"net/url"
 	"strings"
 )
@@ -31,6 +31,7 @@ func (im *ImageManager) queryNewImageUrl(query string) (string, error) {
 	}
 
 	decoder := json.NewDecoder(r.Body)
+    
 	var m struct {
 		BossResponse struct {
 			Images struct {
@@ -43,7 +44,7 @@ func (im *ImageManager) queryNewImageUrl(query string) (string, error) {
 
 	err = decoder.Decode(&m)
 
-//	fmt.Println("Queried for new result")
+	//	fmt.Println("Queried for new result")
 	return m.BossResponse.Images.Results[0].Url, err
 }
 
@@ -57,7 +58,7 @@ func (im *ImageManager) queryCachedImageUrl(query string) (bool, string, error) 
 		return false, val, nil
 	}
 
-//	fmt.Println("Cache returned result")
+	//	fmt.Println("Cache returned result")
 
 	return true, val, nil
 }

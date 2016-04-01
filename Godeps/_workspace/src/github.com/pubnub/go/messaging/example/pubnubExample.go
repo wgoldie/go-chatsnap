@@ -6,7 +6,7 @@ import (
 	"bufio"
 	"encoding/binary"
 	"fmt"
-	"github.com/wgoldie/go-chatsnap/Godeps/_workspace/src/github.com/pubnub/go/messaging"
+	"github.com/pubnub/go/messaging"
 	"math/big"
 	"os"
 	"strconv"

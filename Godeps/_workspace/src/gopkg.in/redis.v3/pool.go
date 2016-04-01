@@ -8,7 +8,7 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/wgoldie/go-chatsnap/Godeps/_workspace/src/gopkg.in/bsm/ratelimit.v1"
+	"gopkg.in/bsm/ratelimit.v1"
 )
 
 var (

@@ -1,13 +1,13 @@
 package main
 
 import (
-	"encoding/json"	
-	"github.com/wgoldie/go-chatsnap/Godeps/_workspace/src/github.com/kennygrant/sanitize"
-	"github.com/wgoldie/go-chatsnap/Godeps/_workspace/src/github.com/pubnub/go/messaging"
+	"encoding/json"
+	"fmt"
+	"github.com/kennygrant/sanitize"
+	"github.com/pubnub/go/messaging"
 	"io"
 	"net/http"
 	"regexp"
-	"fmt"
 )
 
 // Expected format of json for message post requests recieved from clients over the api
@@ -24,7 +24,7 @@ type PubnubMessage struct {
 }
 
 // Function provider to handle http requests to the api for sending messages
-func send(im *ImageManager, pn *messaging.Pubnub) func(w http.ResponseWriter, r *http.Request) {
+func send(bm *BingManager, pn *messaging.Pubnub) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		decoder := json.NewDecoder(r.Body)
 		var m Message
@@ -40,12 +40,12 @@ func send(im *ImageManager, pn *messaging.Pubnub) func(w http.ResponseWriter, r 
 
 		sanitizedHandle := sanitize.Accents(m.Handle)
 		cleanHandle := validChars.ReplaceAllString(sanitizedHandle, "")
-		
-		if cleanQuery == "" || cleanHandle == ""{
+
+		if cleanQuery == "" || cleanHandle == "" {
 			return
 		}
 
-		msg := im.getImageUrls(cleanQuery)
+		msg := bm.getImageUrls(cleanQuery)
 
 		if err != nil {
 			panic(err)

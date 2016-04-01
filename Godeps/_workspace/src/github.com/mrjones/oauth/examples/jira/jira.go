@@ -23,7 +23,7 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/wgoldie/go-chatsnap/Godeps/_workspace/src/github.com/mrjones/oauth"
+	"github.com/mrjones/oauth"
 )
 
 func Usage() {
