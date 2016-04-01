@@ -7,7 +7,7 @@ import (
 	"sync"
 	"time"
 
-	"gopkg.in/redis.v3/internal/consistenthash"
+	"github.com/wgoldie/go-chatsnap/Godeps/_workspace/src/gopkg.in/redis.v3/internal/consistenthash"
 )
 
 var (

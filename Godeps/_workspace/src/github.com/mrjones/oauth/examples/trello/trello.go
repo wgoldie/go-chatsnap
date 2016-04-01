@@ -4,7 +4,7 @@ package main
 import (
 	"flag"
 	"fmt"
-	"github.com/mrjones/oauth"
+	"github.com/wgoldie/go-chatsnap/Godeps/_workspace/src/github.com/mrjones/oauth"
 	"io/ioutil"
 	"log"
 	"os"

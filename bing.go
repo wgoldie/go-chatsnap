@@ -1,13 +1,13 @@
 package main
 
 import (
-    "encoding/json"
+	"encoding/json"
 	"fmt"
-	"gopkg.in/redis.v3"
+	"github.com/wgoldie/go-chatsnap/Godeps/_workspace/src/gopkg.in/redis.v3"
+	"io/ioutil"
 	"net/http"
 	"net/url"
 	"strings"
-    "io/ioutil"
 )
 
 // Holds information on the current image API
@@ -20,8 +20,8 @@ type BingManager struct {
 // Queries the image search api for a new image url for the given query string
 func (bm *BingManager) queryNewImageUrl(query string) (string, error) {
 	queryString := fmt.Sprintf(
-        "https://api.datamarket.azure.com/Bing/Search/Image?$format=json&Query=%%27{%s}%%27&$top=1",
-        query)
+		"https://api.datamarket.azure.com/Bing/Search/Image?$format=json&Query=%%27{%s}%%27&$top=1",
+		query)
 
 	req, err := http.NewRequest("GET", queryString, nil)
 	if err != nil {
@@ -33,26 +33,26 @@ func (bm *BingManager) queryNewImageUrl(query string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-    
-    body, err := ioutil.ReadAll(resp.Body)
-    if err != nil {
-		return "", err
-    }
-    
-    var m struct{
-        D struct { 
-            Results []struct {
-                MediaUrl string `json:"MediaUrl"`
-            } `json:"results"`
-        } `json:"d"`
-    }
 
-    err = json.Unmarshal(body, &m)
+	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-        fmt.Println(err)
 		return "", err
 	}
-    return m.D.Results[0].MediaUrl, err
+
+	var m struct {
+		D struct {
+			Results []struct {
+				MediaUrl string `json:"MediaUrl"`
+			} `json:"results"`
+		} `json:"d"`
+	}
+
+	err = json.Unmarshal(body, &m)
+	if err != nil {
+		fmt.Println(err)
+		return "", err
+	}
+	return m.D.Results[0].MediaUrl, err
 }
 
 // Queries the cached image url database for the given query string
@@ -99,7 +99,7 @@ func (bm *BingManager) getImageUrl(query string) (string, error) {
 // Gets a series of imageurls for the given query string's ngram elements
 // Currently seperates on spaces
 func (bm *BingManager) getImageUrls(query string) []string {
-    fmt.Println(query)
+	fmt.Println(query)
 	fields := strings.Fields(query)
 	results := []string{}
 	for _, el := range fields {

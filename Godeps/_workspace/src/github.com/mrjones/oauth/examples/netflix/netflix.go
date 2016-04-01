@@ -12,7 +12,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/mrjones/oauth"
+	"github.com/wgoldie/go-chatsnap/Godeps/_workspace/src/github.com/mrjones/oauth"
 )
 
 func main() {
@@ -82,7 +82,7 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	
+
 	response, err := client.Get(
 		"http://api-public.netflix.com/users/current")
 	if err != nil {

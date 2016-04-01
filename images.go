@@ -3,8 +3,8 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/mrjones/oauth"
-	"gopkg.in/redis.v3"
+	"github.com/wgoldie/go-chatsnap/Godeps/_workspace/src/github.com/mrjones/oauth"
+	"github.com/wgoldie/go-chatsnap/Godeps/_workspace/src/gopkg.in/redis.v3"
 	"net/url"
 	"strings"
 )
@@ -31,7 +31,7 @@ func (im *ImageManager) queryNewImageUrl(query string) (string, error) {
 	}
 
 	decoder := json.NewDecoder(r.Body)
-    
+
 	var m struct {
 		BossResponse struct {
 			Images struct {

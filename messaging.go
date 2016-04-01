@@ -3,8 +3,8 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/kennygrant/sanitize"
-	"github.com/pubnub/go/messaging"
+	"github.com/wgoldie/go-chatsnap/Godeps/_workspace/src/github.com/kennygrant/sanitize"
+	"github.com/wgoldie/go-chatsnap/Godeps/_workspace/src/github.com/pubnub/go/messaging"
 	"io"
 	"net/http"
 	"regexp"

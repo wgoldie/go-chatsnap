@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
-	"github.com/pubnub/go/messaging"
-	"github.com/satori/go.uuid"
+	"github.com/wgoldie/go-chatsnap/Godeps/_workspace/src/github.com/pubnub/go/messaging"
+	"github.com/wgoldie/go-chatsnap/Godeps/_workspace/src/github.com/satori/go.uuid"
 	"net/http"
 	"os"
 )
